@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>勤怠打刻 - 北の道畑</title>
+</head>
+<body style="font-family:sans-serif;text-align:center;padding:40px;background:#f7f7f7">
+  <h1>北の道畑 勤怠打刻</h1>
+  <p id="welcome" style="font-weight:bold;margin-bottom:20px;"></p>
+  <label for="timeSelect">勤務開始時刻：</label>
+  <select id="timeSelect"></select><br><br>
+  <button id="btnStart" onclick="record('出勤')">出勤</button>
+  <button id="btnEnd" onclick="record('退勤')">退勤</button>
+  <button id="btnEarly" onclick="record('早出')">早出</button>
+  <p style="margin-top:30px;font-size:13px;color:#777;">打刻データは自動でスプレッドシートに保存されます</p>
+  <script src="script.js"></script>
+</body>
+</html>
