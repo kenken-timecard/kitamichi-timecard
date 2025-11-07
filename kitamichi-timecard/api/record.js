@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
   try {
     // 👇 ここにけんけんのGAS URLを設定
-    const GAS_URL = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxVBfq1H4Ndlzs_keRBUmiJXabhEFciRQC6cgYghctXhuwDR9ES5INJnvsX2zSZEXtS/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxn4vFjw9_3XvgJimWcNVITT3k8P5JXntRlp66aA54oORsueWtRtOnhxYuQFj_fOmOL/exec";
 
     // フロント側（出勤ボタンなど）から送られたデータを受け取る
     const { name, action, selectedTime, recordedAt } = req.body;
