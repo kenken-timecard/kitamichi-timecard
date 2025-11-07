@@ -1,35 +1,27 @@
-import { google } from "googleapis";
-
+// Google Apps Script で発行したURLを使う簡易版（けんけん仕様）
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).send("Method not allowed");
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
 
   try {
-    const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
-    const sheetId = process.env.SHEET_ID;
+    // 👇 ここにけんけんのGAS URLを設定
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxVBfq1H4Ndlzs_keRBUmiJXabhEFciRQC6cgYghctXhuwDR9ES5INJnvsX2zSZEXtS/exec";
 
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
-    });
-
-    const sheets = google.sheets({ version: "v4", auth });
+    // フロント側（出勤ボタンなど）から送られたデータを受け取る
     const { name, action, selectedTime, recordedAt } = req.body;
 
-    const date = new Date(recordedAt).toLocaleDateString("ja-JP");
-    const recordedTime = new Date(recordedAt).toLocaleTimeString("ja-JP");
-
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: sheetId,
-      range: "勤怠!A:E",
-      valueInputOption: "USER_ENTERED",
-      requestBody: {
-        values: [[date, name, action, selectedTime, recordedTime]],
-      },
+    // GASにデータを送信
+    const response = await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, action, selectedTime, recordedAt }),
     });
 
-    res.status(200).json({ message: "OK" });
+    const result = await response.text();
+    res.status(200).json({ status: "success", result });
   } catch (err) {
     console.error("Error:", err);
-    res.status(500).json({ error: "Failed to write to sheet" });
+    res.status(500).json({ error: "Failed to send data to GAS" });
   }
 }
